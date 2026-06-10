@@ -8,9 +8,8 @@ The system creates tables for managing book data, library members, and report da
 docker run --name library -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d dhi.io/mysql:8
 
 ## folder structure
+```
 library-api/
-│
-│
 ├── main.py
 ├── database/
 │   ├── db_connection.py
@@ -21,11 +20,12 @@ library-api/
 │   ├── member_routes.py
 │   └── report_routes.py
 ├── logs/
-│   └── app.log
-│
+│   ├── app.log
+│   └── logger_config.py
 ├── README.md
 ├── requirements.txt
 └── .gitignore
+```
 
 ## table structure
 
