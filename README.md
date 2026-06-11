@@ -83,6 +83,7 @@ This must be verified both when adding and updating
 ### Reports
 - 'GET /reports/summary'
 - 'GET /reports/top-member'
+- 'GET /reports/books-by-genre'
 
 ## system flow
                 client
@@ -101,6 +102,13 @@ This must be verified both when adding and updating
              \          /
               \        /
                   SQL
+
+### borrow flow: 
+When borrowing a book, the member enters the identification number of the desired book into the system, as well as his/her ID card. The system checks whether the book with that identification number exists and whether it is available for borrowing. And whether that member exists in the system and is active. If so, it transfers the book to him/her and makes it unavailable. It increases the total number of books that the member borrowed and also enters that member's identification number for that book.
+
+### return flow: 
+When returning a book, the member enters his ID card into the system as well as the ID card of the returned book, and the system checks whether that member exists and is active and whether that book is indeed loaned to him, and if so, takes the book from him and makes the book available.
+
 
 ## running instructions
 uvicorn main:app
