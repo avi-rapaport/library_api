@@ -5,7 +5,7 @@ The system is built on an API server built using FastAPI that connects to a MySQ
 The system creates tables for managing book data, library members, and report data.
 
 ## docker
-docker run --name library -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d dhi.io/mysql:8
+docker run --name library -e MYSQL_ROOT_PASSWORD=<> -e MYSQL_DATABASE=library_db -p 3306:3306 -d dhi.io/mysql:8
 
 ## folder structure
 ```
