@@ -16,7 +16,9 @@ class MemberDb:
             VALUES (%s,%s)"""
             values = [data.get("name"), data.get("email")]
             cursor.execute(quary, values)
+            new_id = cursor.lastrowid
             self.connection.commit()
+            return new_id
 
     def get_all_members(self):
         with self.connection.cursor(dictionary=True) as cursor:
@@ -68,8 +70,11 @@ class MemberDb:
 
     def get_top_member(self):
         with self.connection.cursor(dictionary=True) as cursor:
-            cursor.execute("SELECT * FROM members ORDER BY total_borrows DESC LIMIT 1")
-            top = cursor.fetchone()
+            cursor.execute(
+                """SELECT id AS member_id,total_borrows AS borrowed FROM members 
+                WHERE total_borrows = (SELECT MAX(total_borrows) FROM members)"""
+            )
+            top = cursor.fetchall()
             return top
 
 

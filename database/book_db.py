@@ -16,7 +16,9 @@ class BookDb:
             VALUES (%s,%s,%s)"""
             values = [data.get("title"), data.get("author"), data.get("genre")]
             cursor.execute(quary, values)
+            new_id = cursor.lastrowid
             self.connection.commit()
+            return new_id
 
     def get_all_books(self):
         with self.connection.cursor(dictionary=True) as cursor:
@@ -65,7 +67,7 @@ class BookDb:
     def count_borrowed_books(self):
         with self.connection.cursor(dictionary=True) as cursor:
             cursor.execute(
-                "SELECT COUNT(*) AS borrowed_books FROM books WHERE is_available = FALSE"
+                "SELECT COUNT(*) AS currently_borrowed FROM books WHERE is_available = FALSE"
             )
             count = cursor.fetchone()
             return count
