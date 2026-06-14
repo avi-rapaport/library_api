@@ -28,7 +28,7 @@ def create_book(data: Book):
 
 @router.get("")
 def get_all_books():
-    books.get_all_books()
+    return books.get_all_books()
 
 
 @router.get("/{id}")
@@ -56,7 +56,7 @@ def borrow_book(id: int, member_id: int):
     if book is None:
         raise HTTPException(404, f"book with id {id} not found!")
 
-    if book.get("is_available") == "False":
+    if book.get("is_available") == False:
         raise HTTPException(400, "book is not available!")
 
     member = members.get_member_by_id(member_id)
@@ -66,8 +66,12 @@ def borrow_book(id: int, member_id: int):
     if member.get("is_active") == "False":
         raise HTTPException(400, "member is not active!")
 
+    if books.count_active_borrows_by_member(member_id) >= 3:
+        raise HTTPException(400, "member has reached maximum borrows!")
+
     books.set_available(id, False, member_id)
     members.increment_borrows(member_id)
+    return {"message": f"book with id {id} successfully borrowd to member {member_id}"}
 
 
 @router.patch("/{id}/return/{member_id}")
@@ -76,11 +80,17 @@ def return_book(id: int, member_id: int):
     if book is None:
         raise HTTPException(404, f"book with id {id} not found!")
 
-    member = members.get_member_by_id(member_id)
-    if book.get("borrowd_by_member_id") != member_id:
-        raise HTTPException(400, f"member with id {member_id} doesn't have this book!")
+    if book.get("is_available") == True:
+        raise HTTPException(400, "book is not borrowed!")
 
-    if member.get("is_active") == "False":
-        raise HTTPException(400, "member is not active!")
+    member = members.get_member_by_id(member_id)
+    if member is None:
+        raise HTTPException(404, f"member with id {member_id} not found!")
+
+    if book.get("borrowed_by_member_id") != member_id:
+        raise HTTPException(
+            400, f"book is not borrowed by member with id {member_id} !"
+        )
 
     books.set_available(id, True, None)
+    return {"message": f"book with id {id} successfully return from member {member_id}"}

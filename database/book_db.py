@@ -1,4 +1,4 @@
-from db_connection import connection
+from database.db_connection import connection
 
 
 class BookDb:
@@ -77,12 +77,12 @@ class BookDb:
             return count
 
     def count_active_borrows_by_member(self, member_id: int):
-        with self.connection.cursor(dictionary=True) as cursor:
+        with self.connection.cursor() as cursor:
             cursor.execute(
-                "SELECT COUNT(*) AS borrowed_by_member FROM books WHERE borrowed_by_member_id = %s",
+                "SELECT COUNT(*) FROM books WHERE borrowed_by_member_id = %s",
                 (member_id,),
             )
-            count = cursor.fetchone()
+            count = cursor.fetchone()[0]
             return count
 
 

@@ -1,4 +1,4 @@
-from db_connection import connection
+from database.db_connection import connection
 
 
 class MemberDb:
@@ -40,17 +40,17 @@ class MemberDb:
             cursor.execute(quary, values)
             self.connection.commit()
 
-    def deactivate_member(self, id):
+    def deactivate_member(self, id: int):
         with self.connection.cursor(dictionary=True) as cursor:
-            cursor.execute("UPDATE members SET is_active = False WHERE id = %s", (id,))
+            cursor.execute("UPDATE members SET is_active = FALSE WHERE id = %s", (id,))
             self.connection.commit()
 
-    def activate_member(self, id):
+    def activate_member(self, id: int):
         with self.connection.cursor(dictionary=True) as cursor:
-            cursor.execute("UPDATE members SET is_active = True WHERE id = %s", (id,))
+            cursor.execute("UPDATE members SET is_active = TRUE WHERE id = %s", (id,))
             self.connection.commit()
 
-    def increment_borrows(self, id):
+    def increment_borrows(self, id: int):
         with self.connection.cursor(dictionary=True) as cursor:
             cursor.execute(
                 "UPDATE members SET total_borrows = total_borrows + 1 WHERE id = %s",
