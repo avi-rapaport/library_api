@@ -27,7 +27,7 @@ class DbConnection:
             id INT PRIMARY KEY AUTO_INCREMENT,
             title VARCHAR(50) NOT NULL,
             author VARCHAR(50) NOT NULL,
-            genre ENUM('fiction', 'non-fiction', 'science', 'history', 'other') NOT NULL,
+            genre ENUM('Fiction', 'Non-fiction', 'Science', 'History', 'Other') NOT NULL,
             is_available BOOLEAN DEFAULT TRUE NOT NULL,
             borrowed_by_member_id INT)
             """)

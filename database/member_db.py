@@ -11,11 +11,11 @@ class MemberDb:
 
     def create_member(self, data: dict):
         with self.connection.cursor(dictionary=True) as cursor:
-            quary = """
+            query = """
             INSERT INTO members(name,email)
             VALUES (%s,%s)"""
             values = [data.get("name"), data.get("email")]
-            cursor.execute(quary, values)
+            cursor.execute(query, values)
             new_id = cursor.lastrowid
             self.connection.commit()
             return new_id
@@ -37,9 +37,9 @@ class MemberDb:
             set_parts = [f"{key} = %s" for key in data.keys()]
             set_clause = ", ".join(set_parts)
 
-            quary = f"UPDATE members SET {set_clause} WHERE id = %s"
+            query = f"UPDATE members SET {set_clause} WHERE id = %s"
             values = list(data.values()) + [id]
-            cursor.execute(quary, values)
+            cursor.execute(query, values)
             self.connection.commit()
 
     def deactivate_member(self, id: int):

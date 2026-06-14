@@ -7,11 +7,11 @@ from enum import Enum
 
 
 class Genre(str, Enum):
-    FICTION = "fiction"
-    NON_FICTION = "non-fiction"
-    SCIENCE = "science"
-    HISTORY = "history"
-    OTHER = "other"
+    FICTION = "Fiction"
+    NON_FICTION = "Non-fiction"
+    SCIENCE = "Science"
+    HISTORY = "History"
+    OTHER = "Other"
 
 
 class Book(BaseModel):
@@ -118,7 +118,7 @@ def return_book(id: int, member_id: int):
         raise HTTPException(404, f"member with id {member_id} not found!")
 
     if book.get("borrowed_by_member_id") != member_id:
-        logger.error("book is not borrowed by member with id %s", id)
+        logger.error("book is not borrowed by member with id %s", member_id)
         raise HTTPException(
             400, f"book is not borrowed by member with id {member_id} !"
         )

@@ -29,7 +29,7 @@ def get_books_by_genre_report():
 @router.get("/top-member")
 def get_top_member():
     logger.info("Received request to get top member")
-    if len(books.get_all_books()) == 0:
+    if len(members.get_all_members()) == 0:
         logger.warning("there are no members in the list!")
         raise HTTPException(400, "there are no members in the list!")
     logger.info("got top member successfully")

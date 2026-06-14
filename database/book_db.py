@@ -11,11 +11,11 @@ class BookDb:
 
     def create_book(self, data: dict):
         with self.connection.cursor(dictionary=True) as cursor:
-            quary = """
+            query = """
             INSERT INTO books(title,author,genre)
             VALUES (%s,%s,%s)"""
             values = [data.get("title"), data.get("author"), data.get("genre")]
-            cursor.execute(quary, values)
+            cursor.execute(query, values)
             new_id = cursor.lastrowid
             self.connection.commit()
             return new_id
@@ -37,9 +37,9 @@ class BookDb:
             set_parts = [f"{key} = %s" for key in data.keys()]
             set_clause = ", ".join(set_parts)
 
-            quary = f"UPDATE books SET {set_clause} WHERE id = %s"
+            query = f"UPDATE books SET {set_clause} WHERE id = %s"
             values = list(data.values()) + [id]
-            cursor.execute(quary, values)
+            cursor.execute(query, values)
             self.connection.commit()
 
     def set_available(self, id: int, val: bool, member_id: int):

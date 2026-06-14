@@ -59,7 +59,12 @@ def update_member(id: int, data: UpdateMember):
         raise HTTPException(404, f"member with id {id} not found!")
 
     data = data.model_dump(exclude_unset=True)
-    members.update_member(id, data)
+    try:
+        members.update_member(id, data)
+    except mysql.connector.errors.IntegrityError:
+        logger.error("email already taken by another member!")
+        raise HTTPException(409, "email already taken by another member!")
+
     logger.info("Member with id %s updated successfully", id)
     return {"message": "member updated successfully!"}
 
